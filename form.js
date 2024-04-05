@@ -9,6 +9,33 @@ document.addEventListener("DOMContentLoaded", function() {
         
     }
 
+    function adjustSelectFieldForUserType() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var userType = urlParams.get('userType') || localStorage.getItem("userType") || "b2c";
+
+        // Select the Art-Des-Auftraggebers-6 select field
+        const userTypeSelectField = document.querySelector('#Art-Des-Auftraggebers-6');
+
+        if (userType === "b2b") {
+            // Remove the Privatperson option for b2b users
+            Array.from(userTypeSelectField.options).forEach(option => {
+                if (option.value === "privat") {
+                    option.remove();
+                }
+            });
+            // Set WEG as the default option for b2b users
+            Array.from(userTypeSelectField.options).forEach(option => {
+                if (option.value === "weg") {
+                    option.selected = true;
+                }
+            });
+        }
+        // No need to adjust for b2c, as the original setup is already suitable for them
+    }
+
+    // Call the function to adjust the select field based on the userType
+    adjustSelectFieldForUserType();
+
     function toggleNextButtonOnLastSlide() {
         const nextButton = document.querySelector('[next]');
         // Check if the active slide is the last slide
