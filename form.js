@@ -5,6 +5,18 @@ document.addEventListener("DOMContentLoaded", function() {
      function isValidEmail(email) {
         const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; // Simple email pattern
         return pattern.test(email);
+
+        
+    }
+
+    function toggleNextButtonOnLastSlide() {
+        const nextButton = document.querySelector('[next]');
+        // Check if the active slide is the last slide
+        if (swiperInstance.isEnd) {
+            nextButton.style.display = 'none'; // Hide the 'Next' button
+        } else {
+            nextButton.style.display = ''; // Show the 'Next' button if it's not the last slide
+        }
     }
 
     function checkRequiredFieldsInActiveSlide() {
@@ -77,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
     swiperInstance.on('slideChange', function () {
         checkRequiredFieldsInActiveSlide();
         skipSlideIfNeeded(); // Call skip function on slide change if conditions are met
+        toggleNextButtonOnLastSlide();
     });
 
     // Attach event listeners for real-time field validation
