@@ -44,9 +44,27 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Re-validate fields when the slide changes
+    function skipSlideIfNeeded() {
+        const rechnungsadresseSelect = document.querySelector('#Rechnungsadresse-3');
+        if(rechnungsadresseSelect && rechnungsadresseSelect.value === 'gleiche-adresse') {
+            const canSkipElements = document.querySelectorAll('[can-skip]');
+            canSkipElements.forEach(element => {
+                element.removeAttribute('pflicht');
+            });
+            // Force check after modification to ensure the next button is clickable.
+            checkRequiredFieldsInActiveSlide();
+            // Automatically click the next button to skip
+            const nextButton = document.querySelector('[next]:not(.is-off)');
+            if(nextButton) {
+                nextButton.click();
+            }
+        }
+    }
+
+    // Re-validate fields when the slide changes and possibly skip slide
     swiperInstance.on('slideChange', function () {
         checkRequiredFieldsInActiveSlide();
+        skipSlideIfNeeded(); // Call skip function on slide change if conditions are met
     });
 
     // Attach event listeners for real-time field validation
@@ -57,6 +75,17 @@ document.addEventListener("DOMContentLoaded", function() {
             input.addEventListener('keyup', checkRequiredFieldsInActiveSlide);
         }
     });
+
+    // Listener for 'Rechnungsadresse-3' select field change
+    const rechnungsadresseSelect = document.querySelector('#Rechnungsadresse-3');
+    if(rechnungsadresseSelect) {
+        rechnungsadresseSelect.addEventListener('change', function() {
+            if(this.value === 'gleiche-adresse') {
+                const nextButton = document.querySelector('[next]');
+                nextButton.addEventListener('click', skipSlideIfNeeded, {once: true});
+            }
+        });
+    }
 
     // Perform an initial validation check
     checkRequiredFieldsInActiveSlide();
