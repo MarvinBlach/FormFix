@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
     const swiperInstance = document.querySelector('#form-swiper').swiper;
 
+     // Email validation function
+     function isValidEmail(email) {
+        const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; // Simple email pattern
+        return pattern.test(email);
+    }
+
     function checkRequiredFieldsInActiveSlide() {
         const activeSlide = document.querySelector('#form-swiper .is-active');
         const requiredElements = activeSlide.querySelectorAll('[pflicht]');
@@ -31,6 +37,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 allFieldsFilled = false;
             } else if (element.tagName.toLowerCase() !== 'select' && element.value.trim() === '') {
                 allFieldsFilled = false;
+            }
+        });
+
+        requiredElements.forEach(element => {
+            if (element.type.toLowerCase() === 'email' && !isValidEmail(element.value)) {
+                allFieldsFilled = false; // Mark as invalid if the email is not correctly formatted
             }
         });
 
