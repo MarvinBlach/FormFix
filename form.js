@@ -9,32 +9,33 @@ document.addEventListener("DOMContentLoaded", function() {
         
     }
 
-    function adjustSelectFieldForUserType() {
+    function adjustContentForUserType() {
         var urlParams = new URLSearchParams(window.location.search);
         var userType = urlParams.get('userType') || localStorage.getItem("userType") || "b2c";
 
-        // Select the Art-Des-Auftraggebers-6 select field
+        // Conditionally adjust the select field for 'b2b' users
         const userTypeSelectField = document.querySelector('#Art-Des-Auftraggebers-6');
-
         if (userType === "b2b") {
-            // Remove the Privatperson option for b2b users
+            // Remove options and set default for 'b2b'
             Array.from(userTypeSelectField.options).forEach(option => {
                 if (option.value === "privat") {
-                    option.remove();
+                    option.remove(); // Remove 'Privatperson' option
+                } else if (option.value === "weg") {
+                    option.selected = true; // Set 'WEG' as the default option
                 }
             });
-            // Set WEG as the default option for b2b users
-            Array.from(userTypeSelectField.options).forEach(option => {
-                if (option.value === "weg") {
-                    option.selected = true;
-                }
+
+            // Remove elements with 'only-b2c' attribute
+            const onlyB2CElements = document.querySelectorAll('[remove]');
+            onlyB2CElements.forEach(element => {
+                element.remove();
             });
         }
-        // No need to adjust for b2c, as the original setup is already suitable for them
+        // No adjustments needed for 'b2c' as the original setup suits them
     }
 
-    // Call the function to adjust the select field based on the userType
-    adjustSelectFieldForUserType();
+    // Call the function to adjust content based on the userType
+    adjustContentForUserType();
 
     function toggleNextButtonOnLastSlide() {
         const nextButton = document.querySelector('[next]');
