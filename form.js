@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const optionSelect = document.querySelector('input[pflicht="option-2"]');
         if (optionSelect && optionSelect.previousElementSibling.classList.contains('w--redirected-checked')) {
             // This mimics finding elements that are considered skippable in this context
-            const canSkipElements = document.querySelectorAll('[pflicht]');
+            const canSkipElements = document.querySelectorAll('[can-skip]');
             canSkipElements.forEach(element => {
                 element.removeAttribute('pflicht'); // Make elements not required, enabling skip
             });
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Re-validate fields when the slide changes and possibly skip slide
     swiperInstance.on('slideChange', function () {
         checkRequiredFieldsInActiveSlide();
-        skipSlideIfNeededModified()
+        skipSlideIfNeededModified();
         skipSlideIfNeeded(); // Call skip function on slide change if conditions are met
         toggleNextButtonOnLastSlide();
     });
