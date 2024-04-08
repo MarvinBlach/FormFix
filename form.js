@@ -8,6 +8,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         
     }
+    function isValidZipCode(zipCode) {
+        const pattern = /^\d{5}$/; // German zip code pattern
+        return pattern.test(zipCode);
+    }   
 
     function adjustContentForUserType() {
         var urlParams = new URLSearchParams(window.location.search);
@@ -85,6 +89,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 allFieldsFilled = false; // Mark as invalid if the email is not correctly formatted
             }
         });
+
+        requiredElements.forEach(element => {
+            if (element.type.toLowerCase() === 'email' && !isValidEmail(element.value)) {
+                allFieldsFilled = false; // Mark as invalid if the email is not correctly formatted
+            } else if (element.getAttribute('zip') !== null && !isValidZipCode(element.value)) {
+                allFieldsFilled = false; // Mark as invalid if the zip code is not correctly formatted
+            }
+        });
+
+
+
+        
 
         // Apply or remove 'is-off' based on field validation
         if (allFieldsFilled) {
