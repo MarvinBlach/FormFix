@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let hasOption2BeenProcessed = false;
 
+    
 function skipSlideIfNeededModified() {
     if (hasOption2BeenProcessed) return;
 
@@ -144,9 +145,17 @@ function skipSlideIfNeededModified() {
         const nextButton = document.querySelector('[next]:not(.is-off)');
         if (nextButton) nextButton.click();
 
+        // Hide the element with the id Rechnungsadresse-3 and set its value to 'gleiche-adresse'
+        const rechnungsadresseElement = document.querySelector('#Rechnungsadresse-3');
+        if (rechnungsadresseElement) {
+            rechnungsadresseElement.style.display = 'none';
+            rechnungsadresseElement.value = 'gleiche-adresse';
+        }
+
         hasOption2BeenProcessed = true;
     }
 }
+
 
     
     
