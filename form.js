@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const swiperInstance = document.querySelector('#form-swiper').swiper;
+    handleInputValidation();
 
      // Email validation function
      function isValidEmail(email) {
@@ -11,7 +12,46 @@ document.addEventListener("DOMContentLoaded", function() {
     function isValidZipCode(zipCode) {
         const pattern = /^\d{5}$/; // German zip code pattern
         return pattern.test(zipCode);
-    }   
+    }
+    
+    function handleInputValidation() {
+        console.log('Handling input validation');
+
+        // Get the email and zip code input fields
+        const emailInput = document.querySelector('input[type="email"]');
+        const zipCodeInputs = document.querySelectorAll('[zip]');
+
+        // Get the error message element
+        const errorElement = document.querySelector('[error]');
+
+        // Add input event listener to email input
+        emailInput.addEventListener('input', () => {
+            console.log('Email input changed');
+            if (!isValidEmail(emailInput.value)) {
+                console.log('Invalid email');
+                errorElement.textContent = 'Inkorrekte Email-Adresse';
+                errorElement.classList.remove('no-vis');
+            } else {
+                console.log('Valid email');
+                errorElement.classList.add('no-vis');
+            }
+        });
+
+        // Add input event listeners to all zip code inputs
+        zipCodeInputs.forEach(zipCodeInput => {
+            zipCodeInput.addEventListener('input', () => {
+                console.log('Zip code input changed');
+                if (!isValidZipCode(zipCodeInput.value)) {
+                    console.log('Invalid zip code');
+                    errorElement.textContent = 'Inkorrekte Postleitzahl';
+                    errorElement.classList.remove('no-vis');
+                } else {
+                    console.log('Valid zip code');
+                    errorElement.classList.add('no-vis');
+                }
+            });
+        });
+    }
 
     function adjustContentForUserType() {
         var urlParams = new URLSearchParams(window.location.search);
