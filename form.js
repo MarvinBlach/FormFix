@@ -145,11 +145,14 @@ function skipSlideIfNeededModified() {
         const nextButton = document.querySelector('[next]:not(.is-off)');
         if (nextButton) nextButton.click();
 
-        // Hide the element with the id Rechnungsadresse-3 and set its value to 'gleiche-adresse'
-        const rechnungsadresseElement = document.querySelector('#Rechnungsadresse-3');
+        // Hide the element with the attribute rechnungsadresse-select and set the value of Rechnungsadresse-3 to 'gleiche-adresse'
+        const rechnungsadresseElement = document.querySelector('[rechnungsadresse-select]');
+        const rechnungsadresseSelect = document.querySelector('#Rechnungsadresse-3');
         if (rechnungsadresseElement) {
             rechnungsadresseElement.style.display = 'none';
-            rechnungsadresseElement.value = 'gleiche-adresse';
+        }
+        if (rechnungsadresseSelect) {
+            rechnungsadresseSelect.value = 'gleiche-adresse';
         }
 
         hasOption2BeenProcessed = true;
