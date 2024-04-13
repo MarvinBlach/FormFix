@@ -54,32 +54,65 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function adjustContentForUserType() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var userType = urlParams.get('userType') || localStorage.getItem("userType") || "b2c";
-
-        // Conditionally adjust the select field for 'b2b' users
-        const userTypeSelectField = document.querySelector('#Art-Des-Auftraggebers-6');
-        if (userType === "b2b") {
-            // Remove options and set default for 'b2b'
-            Array.from(userTypeSelectField.options).forEach(option => {
-                if (option.value === "privat") {
-                    option.remove(); // Remove 'Privatperson' option
-                } else if (option.value === "weg") {
-                    option.selected = true; // Set 'WEG' as the default option
+        console.log('Running adjustContentForUserType');
+    
+        // Get both option-1 and option-2 input elements
+        const option1Select = document.querySelector('input[pflicht="option-1"]');
+        const option2Select = document.querySelector('input[pflicht="option-2"]');
+    
+        // Function to handle the logic based on the current selected option
+        const handleSelectionChange = () => {
+            // Delay checking the condition by 100ms
+            setTimeout(() => {
+                console.log('Checking selected option');
+    
+                // Check if option-2 is selected and its previous sibling has 'w--redirected-checked' class
+                if (option2Select.previousElementSibling.classList.contains('w--redirected-checked')) {
+                    console.log('option-2 is selected and previous element is redirected-checked');
+    
+                    // Perform actions when option-2 is selected
+                    document.querySelectorAll('[remove]').forEach(element => {
+                        element.classList.add('hide');
+                        console.log('Added hide class to element:', element);
+                    });
+    
+                    document.querySelectorAll('[auftraggeber]').forEach(element => {
+                        element.removeAttribute('pflicht');
+                        console.log('Removed pflicht attribute from element:', element);
+                    });
+                } else {
+                    console.log('option-1 is selected or option-2 checkbox is not redirected-checked');
+    
+                    // Perform reverse actions if option-1 is selected or option-2 checkbox is not redirected-checked
+                    document.querySelectorAll('[remove]').forEach(element => {
+                        element.classList.remove('hide');
+                        console.log('Removed hide class from element:', element);
+                    });
+    
+                    document.querySelectorAll('[auftraggeber]').forEach(element => {
+                        element.setAttribute('pflicht', 'option-1');
+                        console.log('Added pflicht attribute to element:', element);
+                    });
                 }
-            });
-
-            // Remove elements with 'only-b2c' attribute
-            const onlyB2CElements = document.querySelectorAll('[remove]');
-            onlyB2CElements.forEach(element => {
-                element.remove();
-            });
-        }
-        // No adjustments needed for 'b2c' as the original setup suits them
+            }, 100); // Delay set to 100 milliseconds
+        };
+    
+        // Add click event listeners to both option-1 and option-2 elements
+        option1Select.addEventListener('click', handleSelectionChange);
+        option2Select.addEventListener('click', handleSelectionChange);
     }
-
-    // Call the function to adjust content based on the userType
+    
+    // Call the function to set up the event listeners when the script loads
+    console.log('Calling adjustContentForUserType');
     adjustContentForUserType();
+    
+    
+    
+    
+    
+    
+    
+    
 
     function toggleNextButtonOnLastSlide() {
         const nextButton = document.querySelector('[next]');
